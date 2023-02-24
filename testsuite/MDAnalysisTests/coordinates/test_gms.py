@@ -41,6 +41,17 @@ class _GMSBase(object):
                      err_msg="Wrong number of frames read from {}".format(
                          self.flavour))
 
+    def test_n_atoms(self, u):
+        assert_equal(u.trajectory.n_atoms,
+                     self.n_atoms,
+                     err_msg="Wrong number of atoms read from {}".format(
+                         self.flavour))
+        
+    def test_atom_labels(self, u):
+        actual_labels = u.atoms.names.tolist()
+        assert actual_labels == self.labels, "Atom labels do not match"
+
+
     def test_random_access(self, u):
         u = u
         pos1 = u.atoms[-1].position
@@ -90,6 +101,8 @@ class _GMSBase(object):
 
 class TestGMSReader(_GMSBase):
     n_frames = 21
+    n_atoms = 6
+    labels = ['O', 'H', 'H', 'O', 'H', 'H']
     flavour = "GAMESS C1 optimization"
     step5d = -0.0484664
     filename = GMS_ASYMOPT
@@ -97,6 +110,8 @@ class TestGMSReader(_GMSBase):
 
 class TestGMSReaderSO(_GMSBase):
     n_frames = 8
+    n_atoms = 4
+    labels = ['CARBON', 'CARBON', 'HYDROGEN', 'HYDROGEN']
     flavour = "GAMESS D4H optimization"
     step5d = 0.227637
     filename = GMS_SYMOPT
@@ -104,6 +119,8 @@ class TestGMSReaderSO(_GMSBase):
 
 class TestGMSReaderASS(_GMSBase):
     n_frames = 10
+    n_atoms = 6
+    labels = ['O', 'H', 'H', 'O', 'H', 'H']
     flavour = "GAMESS C1 surface"
     step5d = -0.499996
     filename = GMS_ASYMSURF
