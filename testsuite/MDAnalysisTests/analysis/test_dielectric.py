@@ -33,6 +33,11 @@ class TestDielectric(object):
     def ag(self):
         u = mda.Universe(PSF_TRICLINIC, DCD_TRICLINIC, in_memory=True)
         return u.atoms
+    
+    def test_whole_molecule(self, ag):
+        # keep molecules whole
+        eps = DielectricConstant(ag, make_whole=True).run()
+        assert_allclose(eps.results['eps_mean'], 3.873, rtol=1e-03)
 
     def test_broken_molecules(self, ag):
         # cut molecules apart
