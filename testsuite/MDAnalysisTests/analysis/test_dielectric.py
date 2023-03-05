@@ -39,6 +39,11 @@ class TestDielectric(object):
         eps = DielectricConstant(ag, make_whole=True).run()
         assert_allclose(eps.results['eps_mean'], 3.873, rtol=1e-03)
 
+    def test_multiple_frames_whole_molecule(self, ag):
+        # keep molecules whole for multiple frames
+        eps = DielectricConstant(ag, make_whole=True).run(start = 0, stop = 5)
+        assert_allclose(eps.results['eps_mean'], 2.243, rtol=1e-03)    
+
     def test_broken_molecules(self, ag):
         # cut molecules apart
         ag.universe.transfer_to_memory()
